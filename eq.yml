@@ -1,0 +1,124 @@
+version: '3'
+
+services:
+
+  rabbit:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: digitaleq
+      RABBITMQ_DEFAULT_PASS: digitaleq
+    restart: always
+    networks:
+      - eq-runner
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  eq-survey-runner-db:
+    image: postgres:9.4
+    environment:
+      POSTGRES_PASSWORD: digitaleq
+      POSTGRES_USER: digitaleq
+      POSTGRES_DB: runner
+    restart: always
+    networks:
+      - eq-runner
+    ports:
+      - 5432
+
+  eq-survey-register:
+    image: onsdigital/eq-survey-register
+    restart: always
+    networks:
+      - eq-runner
+    ports:
+      - "8080:8080"
+
+  eq-survey-runner:
+    image: onsdigital/eq-survey-runner
+    environment:
+      EQ_DEV_MODE: "True"
+      EQ_DEVELOPER_LOGGING: "True"
+      EQ_SERVER_SIDE_STORAGE_DATABASE_HOST: eq-survey-runner-db
+      EQ_SERVER_SIDE_STORAGE_DATABASE_NAME: runner
+      EQ_RABBITMQ_HOST: rabbit
+      EQ_RABBITMQ_HOST_SECONDARY: rabbit
+      EQ_SECRETS_FILE: docker-secrets.yml
+    depends_on:
+      - eq-survey-runner-db
+      - rabbit
+    restart: always
+    networks:
+      - eq-runner
+    ports:
+      - "5000:5000"
+
+  eq-survey-launcher:
+    image: onsdigital/go-launch-a-survey
+    environment:
+      SURVEY_RUNNER_URL: http://localhost:5000
+      SURVEY_REGISTER_URL: http://eq-survey-register:8080/
+    depends_on:
+      - eq-survey-runner
+    restart: always
+    networks:
+      - eq-runner
+    ports:
+      - "8000:8000"
+
+  eq-author:
+    image: onsdigital/eq-author:add-dockerfile
+    environment:
+      REACT_APP_BASE_NAME: /eq-author
+      REACT_APP_API_URL: http://localhost:4000/graphql
+      REACT_APP_USE_MOCK_API: "false"
+    depends_on:
+      - eq-author-api
+    restart: always
+    networks:
+      - eq-author
+    ports:
+      - 3000:3000
+
+  eq-author-api:
+    image: onsdigital/eq-author-api
+    environment:
+      DB_CONNECTION_URI: postgres://postgres:mysecretpassword@eq-author-db:5432/postgres
+    depends_on:
+      - eq-author-db
+    restart: always
+    networks:
+      - eq-author
+    ports:
+      - 4000:4000
+
+  eq-publisher:
+    image: onsdigital/eq-publisher
+    environment:
+      GRAPHQL_API_URL: http://eq-author-api:4000/graphql
+    depends_on:
+      - eq-author-api
+    restart: always
+    networks:
+      - eq-author
+      - eq-runner
+    ports:
+      - 9000:9000
+
+  eq-author-db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: postgres
+    restart: always
+    networks:
+      - eq-author
+    ports:
+      - 5432
+
+networks:
+  eq-runner:
+    driver: bridge
+  eq-author:
+    driver: bridge
