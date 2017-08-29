@@ -10,7 +10,7 @@ https://docs.docker.com/docker-for-mac/install/
 Here are the various EQ services and how they relate to one another.
 Click each service to navigate to the appropriate GitHub repository.
 
-![EQ Component Diagram](/component-diagram.svg "EQ Component Diagram")
+<img src="https://raw.githubusercontent.com/ONSdigital/eq-compose/02e307c9a59227f77bf93c8e07ad670c55bbf581/component-diagram.svg" width="400" height="400" />
 
 ### Start all EQ services:
 ```
