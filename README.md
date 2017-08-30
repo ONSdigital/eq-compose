@@ -8,7 +8,6 @@ https://docs.docker.com/docker-for-mac/install/
 ### Overview
 
 Here are the various EQ services and how they relate to one another.
-Click each service to navigate to the appropriate GitHub repository.
 
 ![EQ Component Diagram](./component-diagram.png "EQ Component Diagram")
 
