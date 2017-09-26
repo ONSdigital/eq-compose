@@ -35,3 +35,19 @@ eq-author-api                              | http://localhost:4000
 eq-publisher                               | http://localhost:9000
 
 ---
+
+### Use a specific tag for a service:
+
+If, for example, a specific branch from a PR is required for testing purposes,
+the `eq.yml` file can be modified locally by appending a tag to an image name:
+```
+image: onsdigital/eq-runner:branch-name
+```
+Then to restart running services with the new tagged service(s) `pull` down the 
+image(s) from [Docker Hub](https://hub.docker.com/search/?isAutomated=0&isOfficial=0&page=1&pullCount=0&q=onsdigital&starCount=0) and start all EQ services:
+```
+docker-compose -f eq.yml down
+docker-compose -f eq.yml pull
+docker-compose -f eq.yml up
+```
+NB: a tagged image is only pushed to Docker Hub once Travis checks have completed.
