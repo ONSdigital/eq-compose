@@ -72,8 +72,11 @@ services:
       REACT_APP_BASE_NAME: /eq-author
       REACT_APP_API_URL: http://localhost:4000/graphql
       REACT_APP_USE_MOCK_API: "false"
+      REACT_APP_PUBLISHER_URL: http://eq-publisher:9000/publish
+      REACT_APP_GO_LAUNCH_A_SURVEY_URL: http://localhost:8000/quick-launch
     depends_on:
       - eq-author-api
+      - eq-survey-launcher
     restart: always
     networks:
       - eq-author
