@@ -44,9 +44,14 @@ services:
       EQ_RABBITMQ_HOST: rabbit
       EQ_RABBITMQ_HOST_SECONDARY: rabbit
       EQ_SECRETS_FILE: docker-secrets.yml
+      EQ_ENVIRONMENT_PREFIX: dev
+      EQ_DYNAMODB_ENDPOINT: http://eq-survey-runner-dynamodb:8000
+      AWS_ACCESS_KEY_ID: dummy
+      AWS_SECRET_ACCESS_KEY: dummy
     depends_on:
       - eq-survey-runner-db
       - rabbit
+      - eq-survey-runner-dynamodb
     restart: always
     networks:
       - eq-runner
@@ -65,6 +70,14 @@ services:
       - eq-runner
     ports:
       - "8000:8000"
+
+  eq-survey-runner-dynamodb:
+    image: onsdigital/eq-docker-dynamodb:latest
+    restart: always
+    networks:
+      - eq-runner
+    ports:
+      - "6060:8000"
 
   eq-author:
     image: onsdigital/eq-author
