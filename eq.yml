@@ -87,6 +87,7 @@ services:
     image: onsdigital/eq-author-api
     environment:
       DB_CONNECTION_URI: postgres://postgres:mysecretpassword@eq-author-db:5432/postgres
+      NODE_ENV: production
     depends_on:
       - eq-author-db
     restart: always
@@ -99,6 +100,7 @@ services:
     image: onsdigital/eq-publisher
     environment:
       GRAPHQL_API_URL: http://eq-author-api:4000/graphql
+      NODE_ENV: production
     depends_on:
       - eq-author-api
     restart: always
