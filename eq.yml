@@ -79,6 +79,15 @@ services:
     ports:
       - "6060:8000"
 
+  eq-schema-validator:
+    image: onsdigital/eq-schema-validator
+    ports:
+      - "5000"
+    networks:
+      - eq-runner
+      - eq-author
+    restart: on-failure
+
   eq-author:
     image: onsdigital/eq-author
     environment:
@@ -115,9 +124,11 @@ services:
   eq-publisher:
     image: onsdigital/eq-publisher
     environment:
-      GRAPHQL_API_URL: http://eq-author-api:4000/graphql
+      EQ_AUTHOR_API_URL: http://eq-author-api:4000/graphql
+      EQ_SCHEMA_VALIDATOR_URL: http://eq-schema-validator:5000/validate
     depends_on:
       - eq-author-api
+      - eq-schema-validator
     restart: always
     networks:
       - eq-author
