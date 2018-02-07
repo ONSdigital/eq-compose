@@ -86,7 +86,7 @@ services:
     networks:
       - eq-runner
       - eq-author
-    restart: on-failure
+    restart: always
 
   eq-author:
     image: onsdigital/eq-author
