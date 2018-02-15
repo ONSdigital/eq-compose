@@ -41,6 +41,7 @@ services:
       EQ_DEVELOPER_LOGGING: "True"
       EQ_SERVER_SIDE_STORAGE_DATABASE_HOST: eq-survey-runner-db
       EQ_SERVER_SIDE_STORAGE_DATABASE_NAME: runner
+      EQ_ENABLE_SECURE_SESSION_COOKIE: "False"
       EQ_RABBITMQ_HOST: rabbit
       EQ_RABBITMQ_HOST_SECONDARY: rabbit
       EQ_SECRETS_FILE: docker-secrets.yml
