@@ -63,9 +63,12 @@ services:
     image: onsdigital/go-launch-a-survey
     environment:
       SURVEY_RUNNER_URL: http://localhost:5000
-      SURVEY_REGISTER_URL: http://eq-survey-register:8080/
+      SURVEY_REGISTER_URL: http://eq-survey-register:8080
+      SCHEMA_VALIDATOR_URL: http://eq-schema-validator:5000
     depends_on:
       - eq-survey-runner
+      - eq-survey-register
+      - eq-schema-validator
     restart: always
     networks:
       - eq-runner
@@ -83,7 +86,7 @@ services:
   eq-schema-validator:
     image: onsdigital/eq-schema-validator
     ports:
-      - "5000"
+      - "5001:5000"
     networks:
       - eq-runner
       - eq-author
