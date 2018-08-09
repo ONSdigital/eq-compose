@@ -72,6 +72,7 @@ services:
     image: onsdigital/go-launch-a-survey
     environment:
       SURVEY_RUNNER_URL: http://localhost:5000
+      SURVEY_RUNNER_SCHEMA_URL: http://eq-survey-runner:5000
       SURVEY_REGISTER_URL: http://eq-survey-register:8080
       SCHEMA_VALIDATOR_URL: http://eq-schema-validator:5000
     depends_on:
