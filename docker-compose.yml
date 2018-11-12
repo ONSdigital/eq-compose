@@ -45,6 +45,7 @@ services:
       EQ_RABBITMQ_HOST: rabbit
       EQ_RABBITMQ_HOST_SECONDARY: rabbit
       EQ_SECRETS_FILE: docker-secrets.yml
+      EQ_KEYS_FILE: docker-keys.yml
       EQ_DYNAMODB_ENDPOINT: http://eq-survey-runner-dynamodb:8000
       EQ_SUBMITTED_RESPONSES_TABLE_NAME: dev-submitted-responses
       EQ_QUESTIONNAIRE_STATE_TABLE_NAME: dev-questionnaire-state
